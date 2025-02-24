@@ -1,23 +1,26 @@
 import { emitEvent, onEvent } from "./eventBus.ts";
+import { generateScriptWithOllama } from "./ollamaIntegration.ts";
 
-// Listen for a user command event
-onEvent("userCommand", (command) => {
-  console.log(`📥 Received user command: ${command}`);
-  // Simulate processing by emitting a scriptGenerated event
-  emitEvent("scriptGenerated", `Generated script for: ${command}`);
+onEvent("userCommand", async (command) => {
+  console.log(`📥 Received command: ${command}`);
+
+  try {
+    const { fullText, script } = await generateScriptWithOllama(command);
+
+    console.log(`🤖 Full LLM Response:\n${fullText}`);
+    console.log(`📝 Extracted TypeScript Code:\n${script}`);
+
+    // Emit the extracted script for execution
+    emitEvent("scriptGenerated", script);
+  } catch (error) {
+    console.error("❌ Error generating script:", error);
+  }
 });
 
-// Listen for script generation events
 onEvent("scriptGenerated", (script) => {
-  console.log(`⚙️ Executing script: ${script}`);
-  emitEvent("scriptExecution", `Running: ${script}`);
+  console.log("⚙️ Processing extracted script for execution...");
+  emitEvent("scriptExecution", script);
 });
 
-// Listen for script execution events
-onEvent("scriptExecution", (status) => {
-  console.log(`✅ Script execution status: ${status}`);
-});
-
-// Simulate a user command
-console.log("🚀 Starting Hyperion...");
+// Simulate user input
 emitEvent("userCommand", "Rename all .txt files to .md");
