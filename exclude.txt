@@ -1,0 +1,15 @@
+lib
+bin
+include
+requirements.txt
+start.sh
+diarize.py
+reich.py
+dialogue
+history
+generated
+rust-wasm/pkg
+rust-wasm/target
+exclude.txt
+TODO.md
+__pycache__
