@@ -8,6 +8,7 @@ reich.py
 dialogue
 history
 generated
+src/wasm
 rust-wasm/pkg
 rust-wasm/target
 exclude.txt
