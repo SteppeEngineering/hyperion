@@ -1,3 +1,6 @@
+[![DREAM ON -- with Lloyd](https://img.youtube.com/vi/ElTHdSkNw_0/0.jpg)](https://www.youtube.com/watch?v=ElTHdSkNw_0)
+
+
 # HYPERION: **Project Requirements Document (PRD)**
 
 ## **Owner:** ~poldec-tonteg  
