@@ -1,3 +1,5 @@
+// src/main.ts
+
 import { emitEvent, onEvent } from "./eventBus.ts";
 import { generateScriptWithOllama } from "./ollamaIntegration.ts";
 
@@ -10,8 +12,12 @@ onEvent("userCommand", async (command) => {
     console.log(`🤖 Full LLM Response:\n${fullText}`);
     console.log(`📝 Extracted TypeScript Code:\n${script}`);
 
-    // Emit the extracted script for execution
     emitEvent("scriptGenerated", script);
+
+    // Trigger WASM build if the command includes "WASM"
+    if (command.toLowerCase().includes("wasm")) {
+      emitEvent("wasmBuild", { command });
+    }
   } catch (error) {
     console.error("❌ Error generating script:", error);
   }
@@ -23,4 +29,4 @@ onEvent("scriptGenerated", (script) => {
 });
 
 // Simulate user input
-emitEvent("userCommand", "Rename all .txt files to .md");
+emitEvent("userCommand", "Build and run the WASM module");
