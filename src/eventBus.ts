@@ -3,6 +3,9 @@
 import { Subject } from "https://esm.sh/rxjs@7.8.1";
 import { executeWasm } from "./wasmRunner.ts";
 
+import { transcribeAudio } from "./whisperTranscription.ts";
+import { processTranscription } from "./transcriptionProcessor.ts";
+
 // Define an event type structure
 interface Event {
   type: string;
@@ -59,4 +62,17 @@ onEvent("wasmBuild", async (payload) => {
     console.error("❌ Build Execution Error:", error);
     emitEvent("wasmBuildExecutionError", error);
   }
+});
+
+// Add these new event handlers
+onEvent("audioInputReceived", async ({ audioPath }) => {
+  await transcribeAudio(audioPath);
+});
+
+onEvent("transcriptionCompleted", ({ transcription }) => {
+  processTranscription(transcription);
+});
+
+onEvent("transcriptionError", ({ error }) => {
+  console.error("Transcription error:", error);
 });
